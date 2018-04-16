@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-#""Thisfuntion takes as  input a ""
+# *** takes as  input files i) output file of FeatureCount, ii) gtf_file and iii) a list of X genes
 import os, sys, argparse, re
 # import matplotlib
 # import matplotlib.pyplot as plt
@@ -27,12 +27,13 @@ def read_count(input_file):
             chr_name=Chr.split(';')[0]
            
             if chr_name in MYdict and int(matchLen)>=100:
+                #print (matchLen)
                 MYdict[chr_name]+=numFeature
             else:
                 MYdict[chr_name]=numFeature
        
         print ('Number of Genes annotated =', genenb) # Can have this value by grep -c 'gene'feature_output.count
-        
+        print(len(MYdict))
         # Count the number of reads for the chromosome Y and autosomes.
         ChrY_count = autosomal_count = 0
         for key in MYdict:
@@ -41,30 +42,31 @@ def read_count(input_file):
             else:
                 autosomal_count+=int(MYdict[key])
         print(ChrY_count)
+        print(autosomal_count)
         #print('number of reads on Y Chr =', ChrY_count)
         #print('number of reads on autosomes =', autosomal_count)
         #print('Total of mapped reads=', ChrY_count + autosomal_count)
         
-        return MYdict
+        return genenb, MYdict
 
 
     
-#def match_X_scaffold (list_X_specificGene, gtf_file):
+def match_X_scaffold (list_X_specificGene, gtf_file):
     " Match genes on X chromosomes file found in the gtf file and extract the gene_id of the corresponding by storig it in the dict geneMatch "
-    #with open (list_X_specificGene) as xGene, open (gtf_file) as gtf:
+    with open (list_X_specificGene) as xGene, open (gtf_file) as gtf:
         
-        #next(xGene)
+        next(xGene)
         
-        #geneXlist=[]
-        #dico_gene={}
-        #geneMatch={}
+        geneXlist=[]
+        dico_gene={}
+        geneMatch={}
         
-        #for line in xGene:
-            #line=line.strip()
-            #if line:
-                #gene_X=line.split()[0]
-                #geneXlist.append(gene_X)
-        #print('Number of X chr genes =', len(geneXlist)) #Number of Xgenes found on the genome paper
+        for line in xGene:
+            line=line.strip()
+            if line:
+                gene_X=line.split()[0]
+                geneXlist.append(gene_X)
+        print('Number of X chr genes =', len(geneXlist)) #Number of Xgenes found on the genome paper
         
         #for gene in gtf:
             #tmp=gene.split()
@@ -94,9 +96,9 @@ def read_count(input_file):
                 
 
 count_file=sys.argv[1] # Output file of the program FeatureCount(.txt)
-#gtf=sys.argv[2] # GTF file (Dowload the GFF3 file from Marchantia.info and convert into GTF by gffread pachage
-#x=sys.argv[3] # List of genes identified on the X chromosome
+gtf=sys.argv[2] # GTF file (Dowload the GFF3 file from Marchantia.info and convert into GTF by gffread pachage
+x=sys.argv[3] # List of genes identified on the X chromosome
 
-f1=read_count(count_file)
+ga,f1=read_count(count_file)
 
-#ID_Xgenes=match_X_scaffold(x, gtf)
+ID_Xgenes=match_X_scaffold(x, gtf)

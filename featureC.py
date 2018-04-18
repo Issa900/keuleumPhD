@@ -2,8 +2,12 @@
 # -*- coding: utf-8 -*-
 
 
-# 
-#*** takes as  input files i) output file of FeatureCount, and ii) a list of specific genes_id
+# This script is for parsing the output files of the program FeatureCount; it counts the number of reads mapped on sex chromosome versus autosomes in Marchantia polymorpha
+
+#*** takes as  input files i) output file of FeatureCount (count.txt), and ii) a list of specific genes_id
+
+##Usage: 
+# $ python featureC.py count.txt list_of_Xgenes.txt
 import os, sys, argparse, re
 import itertools
 from itertools import islice
